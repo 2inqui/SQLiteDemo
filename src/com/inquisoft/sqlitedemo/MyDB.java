@@ -61,4 +61,14 @@ public class MyDB {
 	}
 	
 	
+	public void updateComment(Comment comment){
+		String update = "UPDATE Comments SET who=?, comment=? WHERE _id=?";
+		db.execSQL(update, new String[]{comment.who,comment.comment,comment._id+""});
+	}
+	
+	public void deleteComment(Comment comment){
+		String update = "DELETE FROM Comments WHERE _id = ?";
+		db.execSQL(update, new String[]{comment._id+""});
+	}
+	
 }

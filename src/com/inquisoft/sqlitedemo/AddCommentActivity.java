@@ -11,12 +11,22 @@ public class AddCommentActivity extends Activity {
 	EditText etWho;
 	EditText etMessage;
 	
+	Comment comment;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_comment);
 		etWho = (EditText) findViewById(R.id.activity_add_comment_et_who);
 		etMessage = (EditText) findViewById(R.id.activity_add_comment_et_message);
+		
+		int commentID = getIntent().getIntExtra("commentID", -1);
+		
+		if(commentID != -1){
+			comment = MyDB.getInstance(this).getCommentByID(commentID);
+			etWho.setText(comment.getWho());
+			etMessage.setText(comment.getComment());
+		}
 	}
 	
 	
@@ -25,14 +35,32 @@ public class AddCommentActivity extends Activity {
 	 * @param v
 	 */
 	public void save(View v){
-		Comment comment  = new Comment();
+		Comment commentNew  = new Comment();
 		
-		comment.who = etWho.getText().toString();
-		comment.comment = etMessage.getText().toString();
+		commentNew.who = etWho.getText().toString();
+		commentNew.comment = etMessage.getText().toString();
 		
-		MyDB.getInstance(this).createComment(comment);
+		MyDB.getInstance(this).createComment(commentNew);
 		
 		Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void update(View v){
+		if(comment != null){
+			comment.who = etWho.getText().toString();
+			comment.comment = etMessage.getText().toString();
+			MyDB.getInstance(this).updateComment(comment);
+		}else{
+			Toast.makeText(this, "No valid commetn", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	public void delete(View v){
+		if(comment != null){
+			MyDB.getInstance(this).deleteComment(comment);
+		}else{
+			Toast.makeText(this, "No valid commetn", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 }

@@ -6,10 +6,13 @@ import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -25,6 +28,23 @@ public class CommentActivity extends Activity {
 		setContentView(R.layout.activity_comments);
 		
 		listView = (ListView) findViewById(R.id.list_view);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				MyAdapter adapter = (MyAdapter) arg0.getAdapter();
+				Intent i = new Intent(CommentActivity.this,AddCommentActivity.class);
+				i.putExtra("commentID", adapter.getComment(arg2).get_id());
+				startActivity(i);
+			}
+		});
+	}
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
 		listView.setAdapter(new MyAdapter(this, R.layout.list_item_comment));
 	}
 
@@ -36,6 +56,10 @@ public class CommentActivity extends Activity {
 			super(context, textViewResourceId);
 			// TODO Auto-generated constructor stub
 			comments = MyDB.getInstance(context).getComments();
+		}
+		
+		public Comment getComment(int position){
+			return comments.get(position);
 		}
 		
 		@Override
