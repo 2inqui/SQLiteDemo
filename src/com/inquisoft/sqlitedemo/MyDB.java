@@ -71,4 +71,19 @@ public class MyDB {
 		db.execSQL(update, new String[]{comment._id+""});
 	}
 	
+	public ArrayList<Comment> getCommentsByWho(String who){
+		String select = "SELECT * FROM Comments WHERE who like('%"+who+"%' )";
+		Cursor c = db.rawQuery(select, null);
+		ArrayList<Comment> comments = new ArrayList<Comment>();
+		while(c.moveToNext()){
+			Comment comment = new Comment();
+			comment.set_id(c.getInt(0));
+			comment.setDate(new Date(c.getLong(1)));
+			comment.setWho(c.getString(2));
+			comment.setComment(c.getString(3));
+			comments.add(comment);
+		}
+		return comments;
+	}
+	
 }

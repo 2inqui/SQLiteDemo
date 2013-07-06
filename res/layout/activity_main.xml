@@ -29,4 +29,15 @@
         android:onClick="viewComments"
         android:text="@string/comments" />
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/activity_main_button_comments"
+        android:layout_alignRight="@+id/activity_main_button_comments"
+        android:layout_below="@+id/activity_main_button_comments"
+        android:layout_marginTop="50dp"
+        android:onClick="createNotification"
+        android:text="@string/create_notification" />
+
 </RelativeLayout>

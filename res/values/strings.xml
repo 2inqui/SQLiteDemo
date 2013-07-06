@@ -9,5 +9,9 @@
     <string name="name">Name</string>
     <string name="message">Message</string>
     <string name="save">Save</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="create_notification">Create Notification</string>
+    <string name="search_hint">Buscar quien dejo comentario</string>
 
 </resources>

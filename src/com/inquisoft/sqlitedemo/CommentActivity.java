@@ -3,8 +3,10 @@ package com.inquisoft.sqlitedemo;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,11 +18,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 public class CommentActivity extends Activity {
 
 	ListView listView;
+	SearchView svSearch;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,23 +43,34 @@ public class CommentActivity extends Activity {
 				startActivity(i);
 			}
 		});
+		// Associate searchable configuration with the SearchView
+	    SearchManager searchManager =
+	           (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+		svSearch = (SearchView) findViewById(R.id.search_view);
+		svSearch.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		
+		
+		// Get the intent, verify the action and get the query
+	    Intent intent = getIntent();
+	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+	      String query = intent.getStringExtra(SearchManager.QUERY);
+	      listView.setAdapter(new MyAdapter(this, R.layout.list_item_comment, MyDB.getInstance(this).getCommentsByWho(query)));
+	    }else{
+	    	listView.setAdapter(new MyAdapter(this, R.layout.list_item_comment, MyDB.getInstance(this).getComments()));
+	    }
+		
 	}
 	
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		listView.setAdapter(new MyAdapter(this, R.layout.list_item_comment));
-	}
 
 	private class MyAdapter extends ArrayAdapter<Comment>{
 
-		ArrayList<Comment> comments;
+		List<Comment> comments;
 		
-		public MyAdapter(Context context, int textViewResourceId) {
-			super(context, textViewResourceId);
-			// TODO Auto-generated constructor stub
-			comments = MyDB.getInstance(context).getComments();
+		public MyAdapter(Context context, int textViewResourceId,
+				List<Comment> objects) {
+			super(context, textViewResourceId, objects);
+			comments = objects;
 		}
 		
 		public Comment getComment(int position){

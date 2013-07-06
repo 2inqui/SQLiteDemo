@@ -24,11 +24,36 @@
         android:hint="@string/message"
         android:inputType="textMultiLine" />
 
-    <Button
-        android:id="@+id/button1"
+    <LinearLayout
+        android:id="@+id/options_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="save"
-        android:text="@string/save" />
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="save"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="update"
+            android:text="@string/update" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="delete"
+            android:text="@string/delete" />
+
+    </LinearLayout>
 
 </LinearLayout>
